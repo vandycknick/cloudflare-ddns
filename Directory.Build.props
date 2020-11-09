@@ -1,0 +1,17 @@
+<Project>
+
+  <PropertyGroup>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+
+    <BuildDirectory>$(MSBuildThisFileDirectory).build/</BuildDirectory>
+    <BaseIntermediateOutputPath>$(BuildDirectory)obj/$(MSBuildProjectName)/</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(BuildDirectory)bin/$(MSBuildProjectName)/</BaseOutputPath>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)packages/$(MSBuildProjectName)/$(Configuration)</PackageOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)/LICENSE" Pack="true" Visible="false" PackagePath=""/>
+  </ItemGroup>
+
+</Project>
