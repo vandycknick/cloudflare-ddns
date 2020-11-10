@@ -14,24 +14,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
 
-    - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.403'
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.403'
 
-    - name: Checkout code
-      uses: actions/checkout@v1
+      - name: Install dependencies
+        run: make restore
 
-    - name: Install dependencies
-      run: make restore
+      - name: Unit tests
+        run: make test
 
-    - name: Unit tests
-      run: make test
+      - name: Build & Package
+        run: make
 
-    - name: Build & Package
-      run: make
-
-    - name: Push packages
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      run: dotnet nuget push artifacts/*.nupkg --api-key ${{ secrets.FEEDZ_IO_TOKEN }} --source https://f.feedz.io/nvd/cloudflare-ddns/nuget/index.json --skip-duplicate
+      - name: Push packages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: dotnet nuget push artifacts/*.nupkg --api-key ${{ secrets.FEEDZ_IO_TOKEN }} --source https://f.feedz.io/nvd/cloudflare-ddns/nuget/index.json --skip-duplicate

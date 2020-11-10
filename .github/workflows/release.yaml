@@ -17,6 +17,12 @@ jobs:
         with:
           dotnet-version: '3.1.403'
 
+      - name: Install dependencies
+        run: make restore
+
+      - name: Unit tests
+        run: make test
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
