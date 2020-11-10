@@ -34,4 +34,4 @@ jobs:
 
     - name: Push packages
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      run: dotnet nuget push artifacts/*.nupkg --api-key ${{ secrets.FEEDZ_IO_TOKEN }} --source https://f.feedz.io/nvd/onelogin-aws-cli/nuget/index.json --skip-duplicate
+      run: dotnet nuget push artifacts/*.nupkg --api-key ${{ secrets.FEEDZ_IO_TOKEN }} --source https://f.feedz.io/nvd/cloudflare-ddns/nuget/index.json --skip-duplicate
