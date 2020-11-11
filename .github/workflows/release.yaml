@@ -45,12 +45,13 @@ jobs:
         with:
           context: src/cloudflare-ddns
           file: src/cloudflare-ddns/Dockerfile
+          platforms: linux/amd64
           push: true
           build-args: |
             MINVERVERSIONOVERRIDE=${{ steps.get_version.outputs.VERSION }}
           tags: |
-            nickvdyck/cloudflare-ddns:latest
-            nickvdyck/cloudflare-ddns:v${{ steps.get_version.outputs.VERSION }}
+            ghcr.io/nickvdyck/cloudflare-ddns:latest
+            ghcr.io/nickvdyck/cloudflare-ddns:v${{ steps.get_version.outputs.VERSION }}
 
       - name: Push to feedz.io
         run: dotnet nuget push artifacts/*.nupkg --api-key ${{ secrets.FEEDZ_IO_TOKEN }} --source https://f.feedz.io/nvd/cloudflare-ddns/nuget/index.json --skip-duplicate
