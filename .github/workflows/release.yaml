@@ -55,10 +55,11 @@ jobs:
 
       - name: Push to feedz.io
         run: dotnet nuget push artifacts/*.nupkg --api-key ${{ secrets.FEEDZ_IO_TOKEN }} --source https://f.feedz.io/nvd/cloudflare-ddns/nuget/index.json --skip-duplicate
-        
+
+      - name: Push to nuget
+        run: dotnet nuget push artifacts/**/*.nupkg --api-key ${{ secrets.NUGET_TOKEN }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+
       - uses: actions/upload-artifact@v2
         with:
           name: artifacts
           path: artifacts
-    # - name: Push to nuget
-    #   run: dotnet nuget push artifacts/**/*.nupkg --api-key ${{ secrets.NUGET_TOKEN }} --source https://api.nuget.org/v3/index.json --skip-duplicate
