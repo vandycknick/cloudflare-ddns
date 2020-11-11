@@ -9,28 +9,32 @@ namespace CloudflareDDNS
 {
     public class Config
     {
+        public const string ENV_CLOUDFLARE_API_TOKEN = "CLOUDFLARE_API_TOKEN";
         public static Task<Config> LoadFromAsync(string path) => LoadFromAsync(path, new FileSystem());
 
         public static async Task<Config> LoadFromAsync(string path, IFileSystem fileSystem)
         {
             using var stream = fileSystem.File.OpenRead(path);
             var config = await JsonSerializer.DeserializeAsync<Config>(stream);
+            var apiToken = Environment.GetEnvironmentVariable(ENV_CLOUDFLARE_API_TOKEN);
 
-            if (string.IsNullOrEmpty(config.ApiKey))
+            config.ApiToken = apiToken == null ? config.ApiToken : apiToken;
+
+            if (string.IsNullOrEmpty(config.ApiToken))
             {
-                throw new InvalidConfigException(nameof(config.ApiKey), "Property can't be null or empty!");
+                throw new InvalidConfigException(nameof(config.ApiToken), $"Property '{nameof(config.ApiToken)}' can't be null or empty!");
             }
 
             foreach (var item in config.Dns)
             {
                 if (string.IsNullOrEmpty(item.ZoneId))
                 {
-                    throw new InvalidConfigException(nameof(item.ZoneId), "Property can't be null or empty!");
+                    throw new InvalidConfigException(nameof(item.ZoneId), $"Property '{nameof(item.ZoneId)}' can't be null or empty!");
                 }
 
                 if (string.IsNullOrEmpty(item.Domain))
                 {
-                    throw new InvalidConfigException(nameof(item.Domain), "Property can't be null or empty!");
+                    throw new InvalidConfigException(nameof(item.Domain), $"Property '{nameof(item.Domain)}' can't be null or empty!");
                 }
             }
 
@@ -43,8 +47,8 @@ namespace CloudflareDDNS
         [JsonPropertyName("ipv6Resolver")]
         public string IPv6Resolver { get; set; } = "https://api6.ipify.org";
 
-        [JsonPropertyName("apiKey")]
-        public string ApiKey { get; set; } = null!;
+        [JsonPropertyName("apiToken")]
+        public string ApiToken { get; set; } = null!;
 
         [JsonPropertyName("dns")]
         public List<DnsConfig> Dns { get; set; } = new List<DnsConfig>();
