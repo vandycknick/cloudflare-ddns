@@ -1,0 +1,20 @@
+# Used for locally testing the cloudflare-ddns helmchart
+releases:
+  - name: cloudflare-ddns
+    namespace: ddns
+    chart: cloudflare-ddns
+    values:
+      - schedule: "*/15 * * * *"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 32Mi
+          limits:
+            cpu: 250m
+            memory: 64Mi
+        config:
+          apiKey: {{requiredEnv "CLOUDFLARE_API_TOKEN" }}
+          dns:
+            - zoneId: {{ requiredEnv "CF_DDNS_DEFAULT_ZONE_ID" }}
+              domain: "ddns"
+              proxied: true

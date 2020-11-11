@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Allow setting api token via environment variable CLOUDFLARE_API_TOKEN
 - Allow configuring log-level via cli argument --log-level (verbose, info, warning, error)
+- Added helm chart for k8s deployments
 
 ### Changed
 - apiKey in config file renamed to apiToken to align naming with cloudflare. (Breaking)

@@ -1,0 +1,40 @@
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "cloudflare-ddns.fullname" . }}
+  labels:
+    app: {{ template "cloudflare-ddns.name" . }}
+    chart: {{ template "cloudflare-ddns.chart" . }}
+    release: {{ .Release.Name }}
+spec:
+  schedule: "{{ .Values.schedule }}"
+  successfulJobsHistoryLimit: {{ .Values.history.success }}
+  failedJobsHistoryLimit: {{ .Values.history.failed }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: {{ .Chart.Name }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              env:
+                {{- if .Values.secrets.apiToken }}
+                - name: CLOUDFLARE_API_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ template "cloudflare-ddns.fullname" . }}-api-token
+                      key: api-token
+                {{- end }}
+              resources:
+{{ toYaml .Values.resources | indent 16 }}
+              volumeMounts:
+                - name: config-json
+                  mountPath: /app/config.json
+                  subPath: config.json
+          volumes:
+            - name: config-json
+              configMap:
+                name: {{ template "cloudflare-ddns.fullname" . }}-config-json
