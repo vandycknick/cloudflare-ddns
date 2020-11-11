@@ -12,8 +12,9 @@ releases:
           limits:
             cpu: 250m
             memory: 64Mi
+        secrets:
+          apiToken: {{requiredEnv "CLOUDFLARE_API_TOKEN" }}
         config:
-          apiKey: {{requiredEnv "CLOUDFLARE_API_TOKEN" }}
           dns:
             - zoneId: {{ requiredEnv "CF_DDNS_DEFAULT_ZONE_ID" }}
               domain: "ddns"
