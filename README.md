@@ -117,6 +117,12 @@ Yes, you most definitely can. The specification is fairly simple, a successful r
 #### How can I best host multple domains from the same IP?
 You can save yourself some trouble when hosting multiple domains pointing to the same IP address (in the case of Traefik) by defining one A & AAAA record  'ddns.example.com' pointing to the IP of the server that will be updated by this DDNS script. For each subdomain, create a CNAME record pointing to 'ddns.example.com'. Now you don't have to manually modify the script config every time you add a new subdomain to your site!
 
+## License
+
+Copyright 2020 [Nick Van Dyck](https://nvd.codes)
+
+MIT
+
 [ci-url]: https://github.com/nickvdyck/cloudflare-ddns
 [ci-badge]: https://github.com/nickvdyck/cloudflare-ddns/workflows/Main/badge.svg
 
