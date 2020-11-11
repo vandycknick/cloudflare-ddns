@@ -44,7 +44,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: src/cloudflare-ddns
-          file: Dockerfile
+          file: src/cloudflare-ddns/Dockerfile
           push: true
           build-args: |
             MINVERVERSIONOVERRIDE=${{ steps.get_version.outputs.VERSION }}
