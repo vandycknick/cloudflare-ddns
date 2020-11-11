@@ -35,7 +35,7 @@ jobs:
 
       - name: Get the version
         id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+        run: echo ::set-output name=VERSION::$(make version)
 
       - name: Package
         run: make
@@ -50,7 +50,7 @@ jobs:
             MINVERVERSIONOVERRIDE=${{ steps.get_version.outputs.VERSION }}
           tags: |
             nickvdyck/cloudflare-ddns:latest
-            nickvdyck/cloudflare-ddns:${{ steps.get_version.outputs.VERSION }}
+            nickvdyck/cloudflare-ddns:v${{ steps.get_version.outputs.VERSION }}
 
       - name: Push to feedz.io
         run: dotnet nuget push artifacts/*.nupkg --api-key ${{ secrets.FEEDZ_IO_TOKEN }} --source https://f.feedz.io/nvd/cloudflare-ddns/nuget/index.json --skip-duplicate

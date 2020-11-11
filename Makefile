@@ -30,7 +30,11 @@ build.docker: VERSION:=$(shell dotnet minver -t v -a minor -v e)
 build.docker:
 	echo $(VERSION)
 	cd $(shell dirname $(CLI_PROJECT)) && \
-		docker build --build-arg MINVERVERSIONOVERRIDE=$(VERSION) -t cloudflare-ddns:$(VERSION) .
+		docker build --build-arg MINVERVERSIONOVERRIDE=$(VERSION) -t cloudflare-ddns:v$(VERSION) .
+
+.PHONY: version
+version:
+	@dotnet minver -t v -a minor -v e
 
 .PHONY: run
 run:
