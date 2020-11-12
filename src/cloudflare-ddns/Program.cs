@@ -6,12 +6,11 @@ using Serilog;
 using Mono.Options;
 using System.Reflection;
 using System;
-using System.IO.Abstractions;
 using Serilog.Events;
 
 namespace CloudflareDDNS
 {
-    public class Program
+    public static class Program
     {
         static async Task<int> Main(string[] args)
         {
