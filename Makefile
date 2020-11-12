@@ -42,7 +42,7 @@ run:
 
 .PHONY: test
 test:
-	dotnet test $(CLI_TEST_PROJECT) /p:CollectCoverage=true
+	dotnet test $(CLI_TEST_PROJECT) /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 
 .PHONY: package
 package: restore build
