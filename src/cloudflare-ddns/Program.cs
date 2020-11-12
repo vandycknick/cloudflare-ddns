@@ -29,7 +29,7 @@ namespace CloudflareDDNS
 
             try
             {
-                var extra = options.Parse(args);
+                options.Parse(args);
 
                 if (showHelp)
                 {
@@ -75,7 +75,6 @@ namespace CloudflareDDNS
             var appConfig = await Config.LoadFromAsync(configFile);
 
             using var client = new HttpClient();
-            var fileSystem = new FileSystem();
             var logger = new LoggerConfiguration()
                 .WriteTo.Console()
                 .MinimumLevel.Is(MapToLogEventLevel(logLevel))

@@ -49,7 +49,7 @@ namespace CloudflareDDNS.Service
             foreach (var ip in addresses)
             {
                 var type = GetTypeFromIPAddress(ip);
-                var current = records.Where(r => r.Type == type && r.Name == fullDomainName).FirstOrDefault();
+                var current = records.FirstOrDefault(r => r.Type == type && r.Name == fullDomainName);
                 var txts = records.Where(r => r.Type == "TXT");
                 var hasCNAME = records.Any(r => r.Type == "CNAME");
 
@@ -89,7 +89,7 @@ namespace CloudflareDDNS.Service
         public static bool HasValidTxtRecord(DNSResult record, IEnumerable<DNSResult> txts)
         {
             var check = string.Format(CHECK_TEMPLATE, Base64Encode(record.Id));
-            return txts.Where(t => t.Content == check).FirstOrDefault() != null;
+            return txts.FirstOrDefault(t => t.Content == check) != null;
         }
 
         public static string Base64Encode(string plainText)
