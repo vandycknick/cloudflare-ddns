@@ -69,7 +69,7 @@ The tool can be configured with a `config.json` file which by default will get p
   "records": [
     {
       "zoneId": "<cloudflare_zone_id>",
-      "domain": "<subdomain_name>",
+      "subdomain": "<subdomain_name>",
       "proxied": true
     },
     ...
@@ -98,12 +98,12 @@ For a minimal valid configuration, all you need to define are the records which 
   "records": [
     {
       "zoneId": "<cloudflare_zone_id>",
-      "domain": "<subdomain_name>",
+      "subdomain": "<subdomain_name>",
       "proxied": true
     },
     {
       "zoneId": "<cloudflare_zone_id>",
-      "domain": "<subdomain_name>",
+      "subdomain": "<subdomain_name>",
       "proxied": false
     },
     ...
@@ -129,11 +129,11 @@ For a minimal valid configuration, all you need to define are the records which 
 
 *Record:*
 
-| Key     | Type   | Default | Description                                                                                                                                                                                                        |
-|---------|--------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| zoneId  | string | `""`    | The ID of the zone where the DNS record will be configured. From your dashboard click into the zone. Under the review tab, scroll down and the zone ID is listed on the right.                                     |
-| domain  | string | `""`    | The subdomain you want to update with an A or AAAA record. IMPORTANT: Only write the subdomain name, do not include the base this is inferred from the zone. (eg foo or an empty string to update the base domain) |
-| proxied | bool   | `false` | Determines whether requests get proxied through Cloudflare. (This usually disables SSH).                                                                                                                           |
+| Key       | Type   | Default | Description                                                                                                                                                                                                        |
+|-----------|--------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| zoneId    | string | `""`    | The ID of the zone where the DNS record will be configured. From your dashboard click into the zone. Under the review tab, scroll down and the zone ID is listed on the right.                                     |
+| subdomain | string | `""`    | The subdomain you want to update with an A or AAAA record. IMPORTANT: Only write the subdomain name, do not include the base this is inferred from the zone. (eg foo or an empty string to update the base domain) |
+| proxied   | bool   | `false` | Determines whether requests get proxied through Cloudflare. (This usually disables SSH).                                                                                                                           |
 
 ## Usage
 
@@ -164,7 +164,7 @@ Options
 #### Can I use my own IP address resolver?
 Yes, you most definitely can. The specification is fairly simple, a successful response should return a 200 status code with the IP address as plain text. Any other status code will get interpreted as an error and thus ignored. There is no example of a resolver at the moment, but one for azure functions is coming soon 😁.
 
-#### How can I best host multiple domains from the same IP?
+#### How can I best host multiple subdomains from the same IP?
 You can save yourself some trouble when hosting multiple domains pointing to the same IP address (in the case of Traefik) by defining one A & AAAA record  'ddns.example.com' pointing to the IP of the server that will be updated by this DDNS script. For each subdomain, create a CNAME record pointing to 'ddns.example.com'. Now you don't have to manually modify the script config every time you add a new subdomain to your site!
 
 #### I keep getting errors related to resolving my public IPv6 address?
