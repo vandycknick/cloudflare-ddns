@@ -15,7 +15,7 @@ releases:
         secrets:
           apiToken: {{requiredEnv "CLOUDFLARE_API_TOKEN" }}
         config:
-          dns:
+          records:
             - zoneId: {{ requiredEnv "CF_DDNS_DEFAULT_ZONE_ID" }}
-              domain: "ddns"
+              subdomain: "ddns"
               proxied: true

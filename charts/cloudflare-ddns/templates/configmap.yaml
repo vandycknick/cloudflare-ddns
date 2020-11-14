@@ -9,21 +9,15 @@ metadata:
 data:
   config.json: |
     {
-      {{- if .Values.config.ipv4 }}
-      "ipv4Resolver": "{{ .Values.config.ipv4 }}",
-      {{- end }}
-      {{- if .Values.config.ipv6 }}
-      "ipv6Resolver": "{{ .Values.config.ipv6 }}",
-      {{- end }}
       {{- if .Values.config.apiKey }}
       "apiKey": "{{ .Values.config.apiKey}}",
       {{- end }}
-      "dns": [
-        {{- range $dns := $.Values.config.dns }}
+      "records": [
+        {{- range $record := $.Values.config.records }}
           {
-            "zoneId": "{{ $dns.zoneId }}",
-            "domain": "{{ $dns.domain }}",
-            "proxied": {{ $dns.proxied }}
+            "zoneId": "{{ $record.zoneId }}",
+            "subdomain": "{{ $record.subdomain }}",
+            "proxied": {{ $record.proxied }}
           }
         {{- end }}
       ]
