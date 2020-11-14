@@ -1,19 +1,18 @@
-using System.Linq;
-using System.Text.Json;
+using System;
+using Serilog.Events;
 
 namespace CloudflareDDNS
 {
-    public class SnakeCaseNamingPolicy : JsonNamingPolicy
+    public static class Utils
     {
-        public override string ConvertName(string name)
-        {
-            return string.Concat(
-                name.Select(
-                    (x, i) => i > 0 && char.IsUpper(x)
-                        ? "_" + x
-                        : x.ToString()
-                        )
-           ).ToLower();
-        }
+        public static LogEventLevel MapToLogEventLevel(string logLevel) =>
+            logLevel switch
+            {
+                "verbose" => LogEventLevel.Verbose,
+                "info" => LogEventLevel.Information,
+                "warning" => LogEventLevel.Warning,
+                "error" => LogEventLevel.Error,
+                _ => throw new ArgumentException($"Invalid log level provided ({logLevel}), only verbose, info, warning, error are supported!")
+            };
     }
 }

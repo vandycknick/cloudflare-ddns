@@ -11,7 +11,7 @@
       "preLaunchTask": "build",
       // If you have changed target frameworks, make sure to update the program path.
       "program": "${workspaceFolder}/.build/bin/cloudflare-ddns/Debug/netcoreapp3.1/cloudflare-ddns.dll",
-      "args": [],
+      "args": ["--log-level", "verbose"],
       "cwd": "${workspaceFolder}",
       // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
       "console": "internalConsole",

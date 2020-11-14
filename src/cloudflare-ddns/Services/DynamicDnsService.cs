@@ -10,7 +10,7 @@ using CloudflareDDNS.Api.Models;
 
 namespace CloudflareDDNS.Service
 {
-    public class DynamicDnsService
+    public class DynamicDnsService : IDynamicDnsService
     {
         private const string CHECK_TEMPLATE = "managed-by: cloudflare-ddns, check: {0}";
         private readonly ILogger _logger;

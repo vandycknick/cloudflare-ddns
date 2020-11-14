@@ -59,20 +59,17 @@ A helm chart is available in the `charts` folder, for more information about the
 To authenticate you will need to create a Cloudflare API token, traditional API keys are not supported! To generate a new API token, go to your [Cloudflare Profile](https://dash.cloudflare.com/profile/api-tokens) and create a token capable of **Edit DNS**. There are 2 ways you can provide this API token:
 
 1. Add an environment variable `CLOUDFLARE_API_TOKEN` with the value of your token.
-2. Add a `apiToken` key at the root of your config.json.
+2. Add an `apiToken` key at the root of your config.json.
 
 ### Configuration
-The tool can be configured with a `config.json` file which by default will get picked up at the cwd. It's also possible to change the path or name to the configuration file via `-c` or `--config`. The file looks as follows:
+The tool can be configured with a `config.json` file which by default will get picked up at the cwd. It's also possible to change the path or name to the configuration file via `-c` or `--config`. A minimal valid config file looks as follows:
 
 ```json
 {
-  "ipv4Resolver": "<http endpoint to ipv4 resolver>",
-  "ipv6Resolver": "<http endpoint to ipv6 resolver>",
-  "apiToken": "<cloudflare api token>",
-  "dns": [
+  "records": [
     {
-      "zoneId": "<cloudflare zone id>",
-      "domain": "<subdomain name>",
+      "zoneId": "<cloudflare_zone_id>",
+      "domain": "<subdomain_name>",
       "proxied": true
     },
     ...
@@ -80,11 +77,63 @@ The tool can be configured with a `config.json` file which by default will get p
 }
 ```
 
-- `ipv4Resolver`: optional http endpoint to a service that can resolve your home ipv4 address, defaults to `https://api.ipify.org`.
-- `ipv6Resolver`: optional http endpoint to a service that can resolve your home ipv6 address, defaults to `https://api6.ipify.org`.
-- `dns.zoneId`: The ID of the zone where the DNS record will be configured. From your dashboard click into the zone. Under the review tab, scroll down and the zone ID is listed on the right.
-- `dns.domain`: The subdomain you want to update with an A or AAAA record. IMPORTANT: Only write the subdomain name, do not include the base this is inferred from the zone. (eg foo or an empty string to update the base domain)
-- `proxied`: Determines whether request get proxied through Cloudflare, defaults to false. (This usually disables SSH)
+For a minimal valid configuration, all you need to define are the records which you would like to sync. But there are a few more options available to play with:
+
+```json
+{
+  "apiToken": "<cloudflare_api_token>",
+  "ipv4": true,
+  "ipv6": true,
+  "resolvers": {
+    "http": {
+      "ipv4Endpoint": "https://api.ipify.org",
+      "ipv6Endpoint": "https://api6.ipify.org"
+    },
+    "dns": "cloudflare",
+    "order": [
+      "http",
+      "dns"
+    ]
+  },
+  "records": [
+    {
+      "zoneId": "<cloudflare_zone_id>",
+      "domain": "<subdomain_name>",
+      "proxied": true
+    },
+    {
+      "zoneId": "<cloudflare_zone_id>",
+      "domain": "<subdomain_name>",
+      "proxied": false
+    },
+    ...
+  ]
+}
+```
+
+#### Config.json Values
+
+*Config:*
+
+| Key                         | Type   | Default                    | Description                                                                                                                                                                                                                                                                                                              |
+|-----------------------------|--------|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| apiToken                    | string | `""`                       | Prefer using `CLOUDFLARE_API_TOKEN` environment variable instead!! Cloudflare API token required to talk to the Cloudflare REST API, traditional API keys are not supported! Make sure this token has the correct permissions for each zone that it needs to create a record. Have a look at the Authentication section! |
+| ipv4                        | bool   | `true`                     | Determines if public ipv4 should get resolved.                                                                                                                                                                                                                                                                           |
+| ipv6                        | bool   | `true`                     | Determines if public ipv6 should get resolved.                                                                                                                                                                                                                                                                           |
+| resolvers.http.ipv4Endpoint | string | `"https://api.ipify.org"`  | HTTP REST endpoint for HTTP resolver to determine public ipv4 address.                                                                                                                                                                                                                                                   |
+| resolvers.http.ipv6Endpoint | string | `"https://api6.ipify.org"` | HTTP REST endpoint for HTTP resolver to determine public ipv6 address.                                                                                                                                                                                                                                                   |
+| resolvers.dns               | string | `"cloudflare"`             | DNS nameserver to use to resolve public ipv4 or/and ipv6 addresses. Supported servers are `cloudflare` and `google`.                                                                                                                                                                                                     |
+| resolvers.order             | list   | `["http", "dns"]`          | Determines the order in which resolvers will be used. By default, it will first try to resolve an IP via HTTP and fallback to DNS. It's possible to change the order and even leave out a specific resolver if you for example only want to resolve over HTTP. An empty list is not supported!                           |
+| resources                   | object | `{}`                       |                                                                                                                                                                                                                                                                                                                          |
+| records                     | list   | `[]`                       | List of subdomains to sync in a given Cloudflare zone eg.                                                                                                                                                                                                                                                                |
+
+*Record:*
+
+| Key     | Type   | Default | Description                                                                                                                                                                                                        |
+|---------|--------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| zoneId  | string | `""`    | The ID of the zone where the DNS record will be configured. From your dashboard click into the zone. Under the review tab, scroll down and the zone ID is listed on the right.                                     |
+| domain  | string | `""`    | The subdomain you want to update with an A or AAAA record. IMPORTANT: Only write the subdomain name, do not include the base this is inferred from the zone. (eg foo or an empty string to update the base domain) |
+| proxied | bool   | `false` | Determines whether requests get proxied through Cloudflare. (This usually disables SSH).                                                                                                                           |
 
 ## Usage
 
@@ -115,8 +164,20 @@ Options
 #### Can I use my own IP address resolver?
 Yes, you most definitely can. The specification is fairly simple, a successful response should return a 200 status code with the IP address as plain text. Any other status code will get interpreted as an error and thus ignored. There is no example of a resolver at the moment, but one for azure functions is coming soon 😁.
 
-#### How can I best host multple domains from the same IP?
+#### How can I best host multiple domains from the same IP?
 You can save yourself some trouble when hosting multiple domains pointing to the same IP address (in the case of Traefik) by defining one A & AAAA record  'ddns.example.com' pointing to the IP of the server that will be updated by this DDNS script. For each subdomain, create a CNAME record pointing to 'ddns.example.com'. Now you don't have to manually modify the script config every time you add a new subdomain to your site!
+
+#### I keep getting errors related to resolving my public IPv6 address?
+When running in verbose mode you will get a richer logging experience. And thus will see lines telling you if it can't resolve an IPv4 or IPv6 address.
+If you are running in an environment that only uses IPv4 (for example docker or a default k8s setup). Then you won't be able to resolve your public IPv6 address and that's why you will see these error messages. If you for certain know that you can't resolve IPv6 in your environment or don't need your public IPV6 to be synced, then you can turn this off in your `config.json` file:
+
+```json
+{
+  ...
+  "ipv6": false,
+  ...
+}
+```
 
 ## License
 
