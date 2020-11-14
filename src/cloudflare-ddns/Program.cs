@@ -132,7 +132,7 @@ namespace CloudflareDDNS
 
             foreach (var item in appConfig.Records)
             {
-                await ddns.UpsertRecords(item.ZoneId, item.Domain, item.Proxied, addresses);
+                await ddns.UpsertRecords(item.ZoneId, item.Subdomain, item.Proxied, addresses);
             }
         }
 

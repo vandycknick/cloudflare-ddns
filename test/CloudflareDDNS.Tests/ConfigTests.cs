@@ -30,7 +30,7 @@ namespace CloudflareDDNS.Tests
                     apiToken = "123",
                     records = new[]
                     {
-                        new { zoneId = "456", domain = "test" }
+                        new { zoneId = "456", subdomain = "test" }
                     }
                 },
                 serializerOptions
@@ -64,7 +64,7 @@ namespace CloudflareDDNS.Tests
                 item => item.Should().BeEquivalentTo(new RecordsConfig
                 {
                     ZoneId = "456",
-                    Domain = "test",
+                    Subdomain = "test",
                     Proxied = false,
                 })
             );
@@ -88,7 +88,7 @@ namespace CloudflareDDNS.Tests
                     },
                     records = new[]
                     {
-                        new { zoneId = "456", domain = "test" }
+                        new { zoneId = "456", subdomain = "test" }
                     }
                 },
                 serializerOptions
@@ -120,7 +120,7 @@ namespace CloudflareDDNS.Tests
                     apiToken = "123",
                     records = new[]
                     {
-                        new { zoneId = "456", domain = "test" }
+                        new { zoneId = "456", subdomain = "test" }
                     }
                 },
                 serializerOptions
@@ -153,7 +153,7 @@ namespace CloudflareDDNS.Tests
                     ipv6 = ipv6Enabled,
                     records = new[]
                     {
-                        new { zoneId = "456", domain = "test" }
+                        new { zoneId = "456", subdomain = "test" }
                     }
                 },
                 serializerOptions
@@ -180,7 +180,7 @@ namespace CloudflareDDNS.Tests
                 {
                     records = new[]
                     {
-                        new { zoneId = "456", domain = "test" }
+                        new { zoneId = "456", subdomain = "test" }
                     }
                 },
                 serializerOptions
@@ -199,9 +199,9 @@ namespace CloudflareDDNS.Tests
         }
 
         [Theory]
-        [InlineData("123", null, "Domain")]
+        [InlineData("123", null, "Subdomain")]
         [InlineData(null, "test", "ZoneId")]
-        public async Task Config_LoadFrom_ThrowsAnExceptionWhenARecordsConfigIsInvalid(string zoneId, string domain, string property)
+        public async Task Config_LoadFrom_ThrowsAnExceptionWhenARecordsConfigIsInvalid(string zoneId, string subdomain, string property)
         {
             // Given
             var contents = JsonSerializer.Serialize(
@@ -210,7 +210,7 @@ namespace CloudflareDDNS.Tests
                     apiToken = "123",
                     records = new[]
                     {
-                        new { zoneId = zoneId, domain = domain }
+                        new { zoneId = zoneId, subdomain = subdomain }
                     }
                 },
                 serializerOptions
@@ -242,7 +242,7 @@ namespace CloudflareDDNS.Tests
                     },
                     records = new[]
                     {
-                        new { zoneId = "456", domain = "test" }
+                        new { zoneId = "456", subdomain = "test" }
                     }
                 },
                 serializerOptions

@@ -44,9 +44,9 @@ namespace CloudflareDDNS
                     throw new InvalidConfigException(nameof(item.ZoneId), $"Property '{nameof(item.ZoneId)}' can't be null or empty!");
                 }
 
-                if (string.IsNullOrEmpty(item.Domain))
+                if (string.IsNullOrEmpty(item.Subdomain))
                 {
-                    throw new InvalidConfigException(nameof(item.Domain), $"Property '{nameof(item.Domain)}' can't be null or empty!");
+                    throw new InvalidConfigException(nameof(item.Subdomain), $"Property '{nameof(item.Subdomain)}' can't be null or empty!");
                 }
             }
 
@@ -103,8 +103,8 @@ namespace CloudflareDDNS
         [JsonPropertyName("zoneId")]
         public string ZoneId { get; set; } = null!;
 
-        [JsonPropertyName("domain")]
-        public string Domain { get; set; } = null!;
+        [JsonPropertyName("subdomain")]
+        public string Subdomain { get; set; } = null!;
 
         [JsonPropertyName("proxied")]
         public bool Proxied { get; set; } = false;

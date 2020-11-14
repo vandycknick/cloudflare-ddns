@@ -45,7 +45,7 @@ namespace CloudflareDDNS.Tests
                     new RecordsConfig
                     {
                         ZoneId = "123",
-                        Domain = "yolo",
+                        Subdomain = "yolo",
                         Proxied = true
                     }
                 }
@@ -80,13 +80,13 @@ namespace CloudflareDDNS.Tests
                     new RecordsConfig
                     {
                         ZoneId = "123",
-                        Domain = "yolo",
+                        Subdomain = "yolo",
                         Proxied = true
                     },
                     new RecordsConfig
                     {
                         ZoneId = "123",
-                        Domain = "yolo2",
+                        Subdomain = "yolo2",
                         Proxied = true
                     }
                 }
@@ -127,7 +127,7 @@ namespace CloudflareDDNS.Tests
                     new RecordsConfig
                     {
                         ZoneId = "123",
-                        Domain = "yolo",
+                        Subdomain = "yolo",
                         Proxied = true
                     }
                 }
@@ -165,7 +165,7 @@ namespace CloudflareDDNS.Tests
                     new RecordsConfig
                     {
                         ZoneId = "123",
-                        Domain = "yolo",
+                        Subdomain = "yolo",
                         Proxied = true
                     }
                 }
@@ -204,7 +204,7 @@ namespace CloudflareDDNS.Tests
                     new RecordsConfig
                     {
                         ZoneId = "123",
-                        Domain = "yolo",
+                        Subdomain = "yolo",
                         Proxied = true
                     }
                 }
@@ -239,7 +239,7 @@ namespace CloudflareDDNS.Tests
                     new RecordsConfig
                     {
                         ZoneId = "123",
-                        Domain = "yolo",
+                        Subdomain = "yolo",
                         Proxied = true
                     }
                 }
@@ -273,7 +273,7 @@ namespace CloudflareDDNS.Tests
                     new RecordsConfig
                     {
                         ZoneId = "123",
-                        Domain = "yolo",
+                        Subdomain = "yolo",
                         Proxied = true
                     }
                 }
