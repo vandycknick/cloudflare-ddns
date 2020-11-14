@@ -2,7 +2,7 @@ namespace CloudflareDDNS.Api.Models
 {
     public class ApiError
     {
-        public static ApiError Unknown = new ApiError
+        public static readonly ApiError Unknown = new ApiError
         {
             Code = -1,
             Message = "Unknown error.",
