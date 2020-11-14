@@ -6,7 +6,10 @@ using Serilog;
 using Mono.Options;
 using System.Reflection;
 using System;
-using Serilog.Events;
+using System.Linq;
+using System.Collections.Generic;
+using System.Net;
+using DnsClient;
 
 namespace CloudflareDDNS
 {
@@ -49,7 +52,7 @@ namespace CloudflareDDNS
                     return 0;
                 }
 
-                await Execute(configFile, logLevel);
+                await ExecuteAsync(configFile, logLevel);
                 return 0;
             }
             catch (OptionException ex)
@@ -69,41 +72,69 @@ namespace CloudflareDDNS
             }
         }
 
-        static async Task Execute(string configFile, string logLevel)
+        static async Task ExecuteAsync(string configFile, string logLevel)
         {
-            var appConfig = await Config.LoadFromAsync(configFile);
+            var config = await Config.LoadFromAsync(configFile);
 
             using var client = new HttpClient();
             var logger = new LoggerConfiguration()
                 .WriteTo.Console()
-                .MinimumLevel.Is(MapToLogEventLevel(logLevel))
+                .MinimumLevel.Is(Utils.MapToLogEventLevel(logLevel))
                 .CreateLogger();
 
-            var ipResolver = new IPResolverService(client, logger, new IPResolverServiceOptions(appConfig.IPv4Resolver, appConfig.IPv6Resolver));
-            var cloudflare = new CloudflareApi(client, new CloudflareApiOptions(appConfig.ApiToken));
+            var resolvers = new Dictionary<string, IPublicIPResolver>
+            {
+                {
+                    "http",
+                    new PublicIPResolverOverHttp(client, logger, new PublicIPResolverOverHttpOptions(
+                        ipv4Endpoint: config.Resolvers.Http.IPv4Endpoint,
+                        ipv6Endpoint: config.Resolvers.Http.IPv6Endpoint
+                    ))
+                },
+                {
+                    "dns",
+                    new PublicIPResolverOverDns(
+                        client: new LookupClient(),
+                        logger: logger,
+                        options: PublicIPResolverOverDns.GetOptionsForDnsServer(config.Resolvers.DnsServer)
+                    )
+                }
+            };
+
+            var resolver = new PublicIPResolver(config.Resolvers.Order.Select(r => resolvers[r]).ToArray());
+            var cloudflare = new CloudflareApi(client, new CloudflareApiOptions(config.ApiToken));
             var ddns = new DynamicDnsService(logger, cloudflare);
 
-            await SyncDDNSCommand(logger, ipResolver, ddns, appConfig);
+            await SyncDNSCommand(logger, resolver, ddns, config);
         }
 
-        public static async Task SyncDDNSCommand(ILogger logger, IPResolverService ipResolver, DynamicDnsService ddns, Config appConfig)
+        public static async Task SyncDNSCommand(ILogger logger, IPublicIPResolver resolver, IDynamicDnsService ddns, Config appConfig)
         {
-            var ips = await ipResolver.Resolve();
-            foreach (var item in appConfig.Dns)
+            var addresses = new List<IPAddress>();
+
+            if (appConfig.IPv4)
             {
-                await ddns.UpsertRecords(item.ZoneId, item.Domain, item.Proxied, ips);
+                var ip = await resolver.ResolveIPv4();
+                if (ip is object) addresses.Add(ip);
+            }
+
+            if (appConfig.IPv6)
+            {
+                var ip = await resolver.ResolveIPv6();
+                if (ip is object) addresses.Add(ip);
+            }
+
+            if (addresses.Count == 0)
+            {
+                logger.Warning("Couldn't resolve your public IPv4 or IPv6 address, check your configuration and connectivity. Skipping ddns sync!");
+                return;
+            }
+
+            foreach (var item in appConfig.Records)
+            {
+                await ddns.UpsertRecords(item.ZoneId, item.Domain, item.Proxied, addresses);
             }
         }
-
-        public static LogEventLevel MapToLogEventLevel(string logLevel) =>
-            logLevel switch
-            {
-                "verbose" => LogEventLevel.Verbose,
-                "info" => LogEventLevel.Information,
-                "warning" => LogEventLevel.Warning,
-                "error" => LogEventLevel.Error,
-                _ => throw new ArgumentException($"Invalid log level provided ({logLevel}), only verbose, info, warning, error are supported!")
-            };
 
         private static string GetVersion()
             => typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "0.0.0";

@@ -28,7 +28,7 @@ namespace CloudflareDDNS.Tests
                 new
                 {
                     apiToken = "123",
-                    dns = new[]
+                    records = new[]
                     {
                         new { zoneId = "456", domain = "test" }
                     }
@@ -44,13 +44,24 @@ namespace CloudflareDDNS.Tests
             var config = await Config.LoadFromAsync("~/config.json", fileSystem);
 
             // Then
-            Assert.Equal("https://api.ipify.org", config.IPv4Resolver);
-            Assert.Equal("https://api6.ipify.org", config.IPv6Resolver);
             Assert.Equal("123", config.ApiToken);
-            Assert.Single(config.Dns);
+            Assert.True(config.IPv4);
+            Assert.True(config.IPv6);
+            config.Resolvers.Http.Should().BeEquivalentTo(new HttpResolverConfig
+            {
+                IPv4Endpoint = "https://api.ipify.org",
+                IPv6Endpoint = "https://api6.ipify.org",
+            });
+            Assert.Equal("cloudflare", config.Resolvers.DnsServer);
             Assert.Collection(
-                config.Dns,
-                item => item.Should().BeEquivalentTo(new DnsConfig
+                config.Resolvers.Order,
+                o => Assert.Equal("dns", o),
+                o => Assert.Equal("http", o)
+            );
+            Assert.Single(config.Records);
+            Assert.Collection(
+                config.Records,
+                item => item.Should().BeEquivalentTo(new RecordsConfig
                 {
                     ZoneId = "456",
                     Domain = "test",
@@ -60,16 +71,22 @@ namespace CloudflareDDNS.Tests
         }
 
         [Fact]
-        public async Task Config_LoadFrom_ParsesAGivenConfigFileWithCustomIPResolveEndpoints()
+        public async Task Config_LoadFrom_ParsesAGivenConfigFileWithCustomHttpResolvers()
         {
             // Given
             var contents = JsonSerializer.Serialize(
                 new
                 {
-                    ipv4Resolver = "https://custom-ipv4.org",
-                    ipv6Resolver = "https://custom-ipv6.org",
                     apiToken = "123",
-                    dns = new[]
+                    resolvers = new
+                    {
+                        http = new
+                        {
+                            ipv4Endpoint = "https://custom-ipv4.org",
+                            ipv6Endpoint = "https://custom-ipv6.org"
+                        }
+                    },
+                    records = new[]
                     {
                         new { zoneId = "456", domain = "test" }
                     }
@@ -85,20 +102,23 @@ namespace CloudflareDDNS.Tests
             var config = await Config.LoadFromAsync("~/config.json", fileSystem);
 
             // Then
-            Assert.Equal("https://custom-ipv4.org", config.IPv4Resolver);
-            Assert.Equal("https://custom-ipv6.org", config.IPv6Resolver);
+            config.Resolvers.Http.Should().BeEquivalentTo(new HttpResolverConfig
+            {
+                IPv4Endpoint = "https://custom-ipv4.org",
+                IPv6Endpoint = "https://custom-ipv6.org",
+            });
         }
 
         [Fact]
         public async Task Config_LoadFrom_UsesApiTokenFromEnvironmentVariableWhenProvided()
         {
-            // 
+            // Given
             Environment.SetEnvironmentVariable(Config.ENV_CLOUDFLARE_API_TOKEN, "8910");
             var contents = JsonSerializer.Serialize(
                 new
                 {
                     apiToken = "123",
-                    dns = new[]
+                    records = new[]
                     {
                         new { zoneId = "456", domain = "test" }
                     }
@@ -117,6 +137,40 @@ namespace CloudflareDDNS.Tests
             Assert.Equal("8910", config.ApiToken);
         }
 
+        [Theory]
+        [InlineData(false, true)]
+        [InlineData(true, false)]
+        [InlineData(false, false)]
+        public async Task Config_Loadfrom_ItsPossibleToDisableIPv4OrIPv6Lookups(bool ipv4Enabled, bool ipv6Enabled)
+        {
+            // Given
+            Environment.SetEnvironmentVariable(Config.ENV_CLOUDFLARE_API_TOKEN, "8910");
+            var contents = JsonSerializer.Serialize(
+                new
+                {
+                    apiToken = "123",
+                    ipv4 = ipv4Enabled,
+                    ipv6 = ipv6Enabled,
+                    records = new[]
+                    {
+                        new { zoneId = "456", domain = "test" }
+                    }
+                },
+                serializerOptions
+            );
+            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
+            {
+                { @"~/config.json", new MockFileData(contents) },
+            });
+
+            // When
+            var config = await Config.LoadFromAsync("~/config.json", fileSystem);
+
+            // Then
+            Assert.Equal(ipv4Enabled, config.IPv4);
+            Assert.Equal(ipv6Enabled, config.IPv6);
+        }
+
         [Fact]
         public async Task Config_LoadFrom_ThrowsAnExceptionWhenApiKeyIsNull()
         {
@@ -124,9 +178,9 @@ namespace CloudflareDDNS.Tests
             var contents = JsonSerializer.Serialize(
                 new
                 {
-                    dns = new[]
+                    records = new[]
                     {
-                        new { zondId = "456", domain = "test" }
+                        new { zoneId = "456", domain = "test" }
                     }
                 },
                 serializerOptions
@@ -147,14 +201,14 @@ namespace CloudflareDDNS.Tests
         [Theory]
         [InlineData("123", null, "Domain")]
         [InlineData(null, "test", "ZoneId")]
-        public async Task Config_LoadFrom_ThrowsAnExceptionWhenADnsConfigIsInvalid(string zoneId, string domain, string property)
+        public async Task Config_LoadFrom_ThrowsAnExceptionWhenARecordsConfigIsInvalid(string zoneId, string domain, string property)
         {
             // Given
             var contents = JsonSerializer.Serialize(
                 new
                 {
                     apiToken = "123",
-                    dns = new[]
+                    records = new[]
                     {
                         new { zoneId = zoneId, domain = domain }
                     }
@@ -172,6 +226,38 @@ namespace CloudflareDDNS.Tests
             // Then
             Assert.Equal(property, exception.Property);
             Assert.Equal($"Property '{property}' can't be null or empty!", exception.Message);
+        }
+
+        [Fact]
+        public async Task Config_LoadFrom_ThrowsAnExceptionWhenGivenAnUnsupportedDnsServer()
+        {
+            // Given
+            var contents = JsonSerializer.Serialize(
+                new
+                {
+                    apiToken = "123",
+                    resolvers = new
+                    {
+                        dns = "unsupported",
+                    },
+                    records = new[]
+                    {
+                        new { zoneId = "456", domain = "test" }
+                    }
+                },
+                serializerOptions
+            );
+            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
+            {
+                { @"~/config.json", new MockFileData(contents) },
+            });
+
+            // When
+            var exception = await Assert.ThrowsAsync<InvalidConfigException>(() => Config.LoadFromAsync("~/config.json", fileSystem));
+
+            // Then
+            Assert.Equal("DnsServer", exception.Property);
+            Assert.Equal($"Property 'DnsServer' can only be 'cloudflare' or 'google'!", exception.Message);
         }
     }
 }
