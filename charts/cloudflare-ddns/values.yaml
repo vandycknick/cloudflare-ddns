@@ -14,5 +14,11 @@ history:
 
 resources: {}
 
+logging:
+  level: info
+
 config:
+  ipv4: true
+  ipv6: true
+  resolvers: {}
   records: []

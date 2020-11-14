@@ -9,9 +9,8 @@ metadata:
 data:
   config.json: |
     {
-      {{- if .Values.config.apiKey }}
-      "apiKey": "{{ .Values.config.apiKey}}",
-      {{- end }}
+      "ipv4": {{ .Values.config.ipv4}},
+      "ipv6": {{ .Values.config.ipv6}},
       "records": [
         {{- range $record := $.Values.config.records }}
           {

@@ -14,7 +14,10 @@ releases:
             memory: 64Mi
         secrets:
           apiToken: {{requiredEnv "CLOUDFLARE_API_TOKEN" }}
+        logging:
+          level: verbose
         config:
+          ipv6: false
           records:
             - zoneId: {{ requiredEnv "CF_DDNS_DEFAULT_ZONE_ID" }}
               subdomain: "ddns"

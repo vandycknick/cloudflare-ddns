@@ -20,6 +20,9 @@ spec:
             - name: {{ .Chart.Name }}
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
+              args:
+                - --log-level
+                - {{ .Values.logging.level }}
               env:
                 {{- if .Values.secrets.apiToken }}
                 - name: CLOUDFLARE_API_TOKEN
