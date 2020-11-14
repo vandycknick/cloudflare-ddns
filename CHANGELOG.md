@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+### Added
+- Ability to resolve public ip over DNS (cloudflare, google)
+- Ability to switch between DNS or HTTP resolvers
+- Ability to fallback to another resolver when the first one is not able to resolve a public IP.
+- Ability to disable resolving public ipv4 or ipv6 address
+
+### Changed
+- Changed config file specification (Breaking).
 
 ## [v0.2.0] - 2020-11-11
 ### Added
