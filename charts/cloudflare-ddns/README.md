@@ -10,20 +10,21 @@ The following table lists the configurable parameters of the pihole chart and th
 
 ## Chart Values
 
-| Key              | Type   | Default                               | Description                                                    |
-|------------------|--------|---------------------------------------|----------------------------------------------------------------|
-| image.pullPolicy | string | `"IfNotPresent"`                      |                                                                |
-| image.repository | string | `"ghcr.io/nickvdyck/cloudflare-ddns"` |                                                                |
-| image.tag        | string | `"v0.1.0"`                            |                                                                |
-| schedule         | string | `"*/15 * * * *"`                      |                                                                |
-| secrets.apiToken | string | `""`                                  | Cloudflare personal api token.                                 |
-| history.success  | int    | `3`                                   | Number of successful finished jobs to retain.                  |
-| history.failed   | int    | `1`                                   | Number of failed finished jobs to retain.                      |
-| resources        | object | `{}`                                  |                                                                |
-| config.ipv4      | string | `""`                                  | IPv4 endpoint used to resolve ipv4 addresss, defaults to ipify.|
-| config.ipv6      | string | `""`                                  | IPv6 endpoint used to resolve ipv4 addresss, defaults to ipify.|
-| config.apiToken  | string | `""`                                  | Cloudflare personal token, do not use this in k8s.             |
-| config.dns       | list   | `[]`                                  |                                                                |
+| Key              | Type   | Default                               | Description                                                                                        |
+|------------------|--------|---------------------------------------|----------------------------------------------------------------------------------------------------|
+| image.repository | string | `"ghcr.io/nickvdyck/cloudflare-ddns"` |                                                                                                    |
+| image.tag        | string | `"v0.1.0"`                            |                                                                                                    |
+| image.pullPolicy | string | `"IfNotPresent"`                      |                                                                                                    |
+| schedule         | string | `"*/15 * * * *"`                      |                                                                                                    |
+| secrets.apiToken | string | `""`                                  | Cloudflare personal api token.                                                                     |
+| history.success  | int    | `3`                                   | Number of successful finished jobs to retain.                                                      |
+| history.failed   | int    | `1`                                   | Number of failed finished jobs to retain.                                                          |
+| resources        | object | `{}`                                  |                                                                                                    |
+| logging.level    | string | `"info"`                              | Log level (verbose, info, warning error).                                                          |
+| config.ipv4      | bool   | `true`                                | Public IPv4 lookup enabled.                                                                        |
+| config.ipv6      | bool   | `true`                                | Public IPv6 lookup enabled.                                                                        |
+| config.apiToken  | string | `""`                                  | Cloudflare personal token, do not use this in k8s.                                                 |
+| config.records   | list   | `[]`                                  | Subdomain names to sync, look at cloudflare-ddns `config.json` specification for more information. |
 
 ### Example
 
@@ -38,8 +39,8 @@ secrets:
   apiToken: "123"
 
 config:
-  dns:
+  records:
     - zoneId: "456"
-      domain: "ddns"
+      subdomain: "ddns"
       proxied: true
 ```
