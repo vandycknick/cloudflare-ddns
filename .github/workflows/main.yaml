@@ -17,12 +17,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v1
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '3.1.403'
+          dotnet-version: "3.1.404"
 
       - name: Cache SonarCloud packages
         uses: actions/cache@v1
@@ -50,7 +50,7 @@ jobs:
 
       - name: Build and analyze
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"nickvdyck_cloudflare-ddns" /o:"nickvdyck" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="test/CloudflareDDNS.Tests/coverage.opencover.xml"

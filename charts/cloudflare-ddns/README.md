@@ -11,7 +11,7 @@ The following table lists the configurable parameters of the pihole chart and th
 ## Chart Values
 
 | Key              | Type   | Default                               | Description                                                                                        |
-|------------------|--------|---------------------------------------|----------------------------------------------------------------------------------------------------|
+| ---------------- | ------ | ------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | image.repository | string | `"ghcr.io/nickvdyck/cloudflare-ddns"` |                                                                                                    |
 | image.tag        | string | `"v0.1.0"`                            |                                                                                                    |
 | image.pullPolicy | string | `"IfNotPresent"`                      |                                                                                                    |
@@ -29,6 +29,7 @@ The following table lists the configurable parameters of the pihole chart and th
 ### Example
 
 Sets up cloudflare ddns to run every minute and sync a single domain name into a given zone.
+
 ```yaml
 image:
   tag: v0.1.0

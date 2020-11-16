@@ -1,0 +1,12 @@
+semi: false
+overrides:
+  - files: "*.md"
+    options:
+      parser: markdown
+      tabWidth: 2
+  - files:
+      - "*.yaml"
+      - "*.yml"
+    options:
+      parser: yaml
+      tabWidth: 2
