@@ -1,6 +1,6 @@
 image:
   repository: "ghcr.io/nickvdyck/cloudflare-ddns"
-  tag: v0.3.0
+  tag: v0.4.0
   pullPolicy: IfNotPresent
 
 schedule: "*/15 * * * *"
