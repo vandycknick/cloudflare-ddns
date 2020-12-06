@@ -16,7 +16,8 @@ namespace CloudflareDDNS.Service
             {
                 "cloudflare" => new PublicIPResolverOverDnsOptions(
                     query: "whoami.cloudflare",
-                    isTxt: true,
+                    type: QueryType.TXT,
+                    cls: QueryClass.CH,
                     ipv4NameServers: new List<IPAddress>
                     {
                         IPAddress.Parse("1.1.1.1"),
@@ -30,7 +31,8 @@ namespace CloudflareDDNS.Service
                 ),
                 "google" => new PublicIPResolverOverDnsOptions(
                     query: "o-o.myaddr.l.google.com",
-                    isTxt: true,
+                    type: QueryType.TXT,
+                    cls: QueryClass.IN,
                     ipv4NameServers: new List<IPAddress>
                     {
                         IPAddress.Parse("216.239.32.10"),
@@ -90,7 +92,7 @@ namespace CloudflareDDNS.Service
         {
             try
             {
-                var question = new DnsQuestion(query, QueryType.TXT);
+                var question = new DnsQuestion(query, _options.QueryType, _options.QueryClass);
                 var response = await _client.QueryAsync(question, options);
                 var ip = response.Answers.TxtRecords().FirstOrDefault()?.Text.FirstOrDefault();
 

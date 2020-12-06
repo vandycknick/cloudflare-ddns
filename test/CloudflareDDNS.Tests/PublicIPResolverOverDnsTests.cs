@@ -82,14 +82,14 @@ namespace CloudflareDDNS.Tests
             // Given
             var mockResponse = new Mock<IDnsQueryResponse>();
             var addresses = new List<IPAddress> { IPAddress.Parse("1.1.1.1") };
-            var options = new PublicIPResolverOverDnsOptions("myip.test.com", true, addresses, addresses);
+            var options = new PublicIPResolverOverDnsOptions("myip.test.com", QueryType.TXT, QueryClass.CH, addresses, addresses);
 
             mockResponse
                 .SetupGet(r => r.Answers)
                 .Returns(new List<DnsResourceRecord>
                 {
                     new TxtRecord(
-                        info: new ResourceRecordInfo("myip.test.com", ResourceRecordType.TXT, QueryClass.IN, 5000, 0),
+                        info: new ResourceRecordInfo("myip.test.com", ResourceRecordType.TXT, QueryClass.CH, 5000, 0),
                         values: new string[] { },
                         utf8Values: new string[] { "10.0.0.1" }
                     )
@@ -113,14 +113,14 @@ namespace CloudflareDDNS.Tests
             // Given
             var mockResponse = new Mock<IDnsQueryResponse>();
             var addresses = new List<IPAddress> { IPAddress.Parse("1.1.1.1") };
-            var options = new PublicIPResolverOverDnsOptions("myip.test.com", true, addresses, addresses);
+            var options = new PublicIPResolverOverDnsOptions("myip.test.com", QueryType.TXT, QueryClass.CH, addresses, addresses);
 
             mockResponse
                 .SetupGet(r => r.Answers)
                 .Returns(new List<DnsResourceRecord>
                 {
                     new TxtRecord(
-                        info: new ResourceRecordInfo("myip.test.com", ResourceRecordType.TXT, QueryClass.IN, 5000, 0),
+                        info: new ResourceRecordInfo("myip.test.com", ResourceRecordType.TXT, QueryClass.CH, 5000, 0),
                         values: new string[] { },
                         utf8Values: new string[] { "10.4.4.1", "10.0.0.1" }
                     )
@@ -144,7 +144,7 @@ namespace CloudflareDDNS.Tests
             // Given
             var mockResponse = new Mock<IDnsQueryResponse>();
             var addresses = new List<IPAddress> { IPAddress.Parse("1.1.1.1") };
-            var options = new PublicIPResolverOverDnsOptions("myip.test.com", true, addresses, addresses);
+            var options = new PublicIPResolverOverDnsOptions("myip.test.com", QueryType.TXT, QueryClass.CH, addresses, addresses);
 
             mockResponse
                 .SetupGet(r => r.Answers)
@@ -171,7 +171,7 @@ namespace CloudflareDDNS.Tests
             // Given
             var mockResponse = new Mock<IDnsQueryResponse>();
             var addresses = new List<IPAddress> { IPAddress.Parse("1.1.1.1") };
-            var options = new PublicIPResolverOverDnsOptions("myip.test.com", true, addresses, addresses);
+            var options = new PublicIPResolverOverDnsOptions("myip.test.com", QueryType.TXT, QueryClass.IN, addresses, addresses);
 
             mockResponse
                 .SetupGet(r => r.Answers)
@@ -202,7 +202,7 @@ namespace CloudflareDDNS.Tests
             // Given
             var mockResponse = new Mock<IDnsQueryResponse>();
             var addresses = new List<IPAddress> { IPAddress.Parse("2606:4700:4700::1111") };
-            var options = new PublicIPResolverOverDnsOptions("myip.test.com", true, addresses, addresses);
+            var options = new PublicIPResolverOverDnsOptions("myip.test.com", QueryType.TXT, QueryClass.IN, addresses, addresses);
 
             mockResponse
                 .SetupGet(r => r.Answers)
@@ -233,7 +233,7 @@ namespace CloudflareDDNS.Tests
             // Given
             var mockResponse = new Mock<IDnsQueryResponse>();
             var addresses = new List<IPAddress> { IPAddress.Parse("2606:4700:4700::1111") };
-            var options = new PublicIPResolverOverDnsOptions("myip.test.com", true, addresses, addresses);
+            var options = new PublicIPResolverOverDnsOptions("myip.test.com", QueryType.TXT, QueryClass.IN, addresses, addresses);
 
             mockResponse
                 .SetupGet(r => r.Answers)
