@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace CloudflareDDNS.Api.Models
 {
-    public class DNSResult
+    public class DnsResult
     {
         [JsonPropertyName("id")]
         public string Id { get; set; } = "";

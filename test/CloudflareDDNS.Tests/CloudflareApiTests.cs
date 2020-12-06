@@ -183,7 +183,7 @@ namespace CloudflareDDNS.Tests
             Assert.Equal(2, results.Count);
             Assert.Collection(
                 results,
-                dns => dns.Should().BeEquivalentTo(new DNSResult
+                dns => dns.Should().BeEquivalentTo(new DnsResult
                 {
                     Id = recordOne.id,
                     Type = recordOne.type,
@@ -198,7 +198,7 @@ namespace CloudflareDDNS.Tests
                     CreatedOn = DateTimeOffset.Parse(recordOne.created_on),
                     ModifiedOn = DateTimeOffset.Parse(recordOne.modified_on),
                 }),
-                dns => dns.Should().BeEquivalentTo(new DNSResult
+                dns => dns.Should().BeEquivalentTo(new DnsResult
                 {
                     Id = recordTwo.id,
                     Type = recordTwo.type,
@@ -446,7 +446,7 @@ namespace CloudflareDDNS.Tests
             );
 
             // Then
-            result.Should().BeEquivalentTo(new DNSResult
+            result.Should().BeEquivalentTo(new DnsResult
             {
                 Id = recordOne.id,
                 Type = recordOne.type,
@@ -513,7 +513,7 @@ namespace CloudflareDDNS.Tests
             var result = await cloudflare.CreateDNSRecord(zoneId, "A", "yolo.example.com", "198.51.100.4", 120);
 
             // Then
-            result.Should().BeEquivalentTo(new DNSResult
+            result.Should().BeEquivalentTo(new DnsResult
             {
                 Id = recordOne.id,
                 Type = recordOne.type,
@@ -587,7 +587,7 @@ namespace CloudflareDDNS.Tests
             );
 
             // Then
-            result.Should().BeEquivalentTo(new DNSResult
+            result.Should().BeEquivalentTo(new DnsResult
             {
                 Id = recordOne.id,
                 Type = recordOne.type,
@@ -745,7 +745,7 @@ namespace CloudflareDDNS.Tests
             );
 
             // Then
-            result.Should().BeEquivalentTo(new DNSResult
+            result.Should().BeEquivalentTo(new DnsResult
             {
                 Id = recordOne.id,
                 Type = recordOne.type,
@@ -820,7 +820,7 @@ namespace CloudflareDDNS.Tests
             );
 
             // Then
-            result.Should().BeEquivalentTo(new DNSResult
+            result.Should().BeEquivalentTo(new DnsResult
             {
                 Id = recordOne.id,
                 Type = recordOne.type,
@@ -895,7 +895,7 @@ namespace CloudflareDDNS.Tests
             );
 
             // Then
-            result.Should().BeEquivalentTo(new DNSResult
+            result.Should().BeEquivalentTo(new DnsResult
             {
                 Id = recordOne.id,
                 Type = recordOne.type,

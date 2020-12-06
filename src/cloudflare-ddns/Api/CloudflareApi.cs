@@ -61,7 +61,7 @@ namespace CloudflareDDNS.Api
             return result.Result;
         }
 
-        public async Task<(List<DNSResult> results, ApiResultPager? pager)> ListDNSRecords(string zoneId, string? type = null, string? name = null, int page = 1, int perPage = 20)
+        public async Task<(List<DnsResult> results, ApiResultPager? pager)> ListDNSRecords(string zoneId, string? type = null, string? name = null, int page = 1, int perPage = 20)
         {
             var builder = new UriBuilder($"{ENDPOINT}/zones/{zoneId}/dns_records");
             var queryString = HttpUtility.ParseQueryString(builder.Query);
@@ -86,14 +86,14 @@ namespace CloudflareDDNS.Api
             var response = await _client.SendAsync(message);
             response.EnsureSuccessStatusCode();
 
-            var result = await response.Content.ReadFromJsonAsync<ApiResult<List<DNSResult>>>(_serializerOptions);
+            var result = await response.Content.ReadFromJsonAsync<ApiResult<List<DnsResult>>>(_serializerOptions);
             return (
-                results: result.Result is null ? new List<DNSResult>() : result.Result,
+                results: result.Result is null ? new List<DnsResult>() : result.Result,
                 pager: result.Pager
             );
         }
 
-        public async Task<DNSResult> CreateDNSRecord(string zoneId, string type, string name, string content, long? ttl = null, bool? proxied = null)
+        public async Task<DnsResult> CreateDNSRecord(string zoneId, string type, string name, string content, long? ttl = null, bool? proxied = null)
         {
             var builder = new UriBuilder($"{ENDPOINT}/zones/{zoneId}/dns_records");
             var dns = new
@@ -117,7 +117,7 @@ namespace CloudflareDDNS.Api
             };
 
             var response = await _client.SendAsync(message);
-            var result = await response.Content.ReadFromJsonAsync<ApiResult<DNSResult>>(_serializerOptions);
+            var result = await response.Content.ReadFromJsonAsync<ApiResult<DnsResult>>(_serializerOptions);
 
             if (!result.Success)
             {
@@ -128,7 +128,7 @@ namespace CloudflareDDNS.Api
             return result.Result;
         }
 
-        public async Task<DNSResult> UpdateDNSRecord(string zoneId, string id, string type, string name, string content, long? ttl = null, bool? proxied = null)
+        public async Task<DnsResult> UpdateDNSRecord(string zoneId, string id, string type, string name, string content, long? ttl = null, bool? proxied = null)
         {
             var builder = new UriBuilder($"{ENDPOINT}/zones/{zoneId}/dns_records/{id}");
             var dns = new
@@ -152,7 +152,7 @@ namespace CloudflareDDNS.Api
             };
 
             var response = await _client.SendAsync(message);
-            var result = await response.Content.ReadFromJsonAsync<ApiResult<DNSResult>>(_serializerOptions);
+            var result = await response.Content.ReadFromJsonAsync<ApiResult<DnsResult>>(_serializerOptions);
 
             if (!result.Success)
             {

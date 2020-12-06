@@ -86,7 +86,7 @@ namespace CloudflareDDNS.Service
             }
         }
 
-        public static bool HasValidTxtRecord(DNSResult record, IEnumerable<DNSResult> txts)
+        public static bool HasValidTxtRecord(DnsResult record, IEnumerable<DnsResult> txts)
         {
             var check = string.Format(CHECK_TEMPLATE, Base64Encode(record.Id));
             return txts.FirstOrDefault(t => t.Content == check) != null;

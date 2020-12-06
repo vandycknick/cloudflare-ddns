@@ -66,12 +66,12 @@ namespace CloudflareDDNS.Tests
 
             _mockCloudflareApi
                 .Setup(api => api.ListDNSRecords(zoneId, null, "domain.example.com", 1, 100))
-                .ReturnsAsync((new List<DNSResult>(), new ApiResultPager()));
+                .ReturnsAsync((new List<DnsResult>(), new ApiResultPager()));
 
             _mockCloudflareApi
                 .Setup(api =>
                     api.CreateDNSRecord(zoneId, "A", "domain.example.com", "10.0.0.1", 1, true))
-                .ReturnsAsync(new DNSResult
+                .ReturnsAsync(new DnsResult
                 {
                     Id = "989c23e6-5481-4858-bed1-584bb922579a",
                     Name = subdomain
@@ -80,7 +80,7 @@ namespace CloudflareDDNS.Tests
             _mockCloudflareApi
                 .Setup(api =>
                     api.CreateDNSRecord(zoneId, "AAAA", "domain.example.com", "2606:4700:4700::1111", 1, true))
-                .ReturnsAsync(new DNSResult
+                .ReturnsAsync(new DnsResult
                 {
                     Id = "8257dd15-2039-4434-887a-aff5d93af2a1",
                     Name = subdomain
@@ -121,12 +121,12 @@ namespace CloudflareDDNS.Tests
 
             _mockCloudflareApi
                 .Setup(api => api.ListDNSRecords(zoneId, null, "domain.example.com", 1, 100))
-                .ReturnsAsync((new List<DNSResult>(), new ApiResultPager()));
+                .ReturnsAsync((new List<DnsResult>(), new ApiResultPager()));
 
             _mockCloudflareApi
                 .Setup(api =>
                     api.CreateDNSRecord(zoneId, "A", "domain.example.com", "10.0.0.1", 1, true))
-                .ReturnsAsync(new DNSResult
+                .ReturnsAsync(new DnsResult
                 {
                     Id = "989c23e6-5481-4858-bed1-584bb922579a",
                     Name = subdomain
@@ -135,7 +135,7 @@ namespace CloudflareDDNS.Tests
             _mockCloudflareApi
                 .Setup(api =>
                     api.CreateDNSRecord(zoneId, "AAAA", "domain.example.com", "2606:4700:4700::1111", 1, true))
-                .ReturnsAsync(new DNSResult
+                .ReturnsAsync(new DnsResult
                 {
                     Id = "8257dd15-2039-4434-887a-aff5d93af2a1",
                     Name = subdomain
@@ -167,16 +167,16 @@ namespace CloudflareDDNS.Tests
                 IPAddress.Parse("10.0.0.1"),
             };
 
-            var records = new List<DNSResult>
+            var records = new List<DnsResult>
             {
-                new DNSResult
+                new DnsResult
                 {
                     Id = "989c23e6-5481-4858-bed1-584bb922579a",
                     Type = "A",
                     Name = $"{subdomain}.{domain}",
                     Content = "10.0.0.2",
                 },
-                new DNSResult
+                new DnsResult
                 {
                     Id = "2de1e83b-38fa-4e47-a6cc-9c3520bf4a85",
                     Type = "TXT",
@@ -219,16 +219,16 @@ namespace CloudflareDDNS.Tests
                 IPAddress.Parse("10.0.0.1"),
             };
 
-            var records = new List<DNSResult>
+            var records = new List<DnsResult>
             {
-                new DNSResult
+                new DnsResult
                 {
                     Id = "989c23e6-5481-4858-bed1-584bb922579a",
                     Type = "A",
                     Name = $"{subdomain}.{domain}",
                     Content = "10.0.0.2",
                 },
-                new DNSResult
+                new DnsResult
                 {
                     Id = "2de1e83b-38fa-4e47-a6cc-9c3520bf4a85",
                     Type = "TXT",
@@ -272,9 +272,9 @@ namespace CloudflareDDNS.Tests
                 IPAddress.Parse("10.0.0.1"),
             };
 
-            var records = new List<DNSResult>
+            var records = new List<DnsResult>
             {
-                new DNSResult
+                new DnsResult
                 {
                     Id = "989c23e6-5481-4858-bed1-584bb922579a",
                     Type = "A",
@@ -319,16 +319,16 @@ namespace CloudflareDDNS.Tests
                 IPAddress.Parse("10.0.0.1"),
             };
 
-            var records = new List<DNSResult>
+            var records = new List<DnsResult>
             {
-                new DNSResult
+                new DnsResult
                 {
                     Id = "989c23e6-5481-4858-bed1-584bb922579a",
                     Type = "A",
                     Name = $"{subdomain}.{domain}",
                     Content = "10.0.0.2",
                 },
-                new DNSResult
+                new DnsResult
                 {
                     Id = "2de1e83b-38fa-4e47-a6cc-9c3520bf4a85",
                     Type = "TXT",
@@ -371,16 +371,16 @@ namespace CloudflareDDNS.Tests
                 IPAddress.Parse("10.0.0.2"),
             };
 
-            var records = new List<DNSResult>
+            var records = new List<DnsResult>
             {
-                new DNSResult
+                new DnsResult
                 {
                     Id = "989c23e6-5481-4858-bed1-584bb922579a",
                     Type = "A",
                     Name = $"{subdomain}.{domain}",
                     Content = "10.0.0.2",
                 },
-                new DNSResult
+                new DnsResult
                 {
                     Id = "2de1e83b-38fa-4e47-a6cc-9c3520bf4a85",
                     Type = "TXT",
@@ -426,9 +426,9 @@ namespace CloudflareDDNS.Tests
                 IPAddress.Parse("10.0.0.1"),
             };
 
-            var records = new List<DNSResult>
+            var records = new List<DnsResult>
             {
-                new DNSResult
+                new DnsResult
                 {
                     Id = "989c23e6-5481-4858-bed1-584bb922579a",
                     Type = "A",
@@ -470,9 +470,9 @@ namespace CloudflareDDNS.Tests
                 IPAddress.Parse("10.0.0.1"),
             };
 
-            var records = new List<DNSResult>
+            var records = new List<DnsResult>
             {
-                new DNSResult
+                new DnsResult
                 {
                     Id = "989c23e6-5481-4858-bed1-584bb922579a",
                     Type = "CNAME",
