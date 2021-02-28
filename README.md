@@ -55,7 +55,7 @@ TODO
 
 ### Helm
 
-A helm chart is available in the `charts` folder, for more information about the available values, have a look at the README inside the [chart](charts/README.md). For helm deployments you don't need to provide a `config.json`, this will get generated for you. At the moment there is no `helm install` available yet, this is on my TO-DO list though. To get started with helm clone the repository or copy over the files in the charts folder.
+A helm chart is available in the `charts` folder, for more information about the available values, have a look at the README inside the [chart](charts/cloudflare-ddns/README.md). For helm deployments you don't need to provide a `config.json`, this will get generated for you. At the moment there is no `helm install` available yet, this is on my TO-DO list though. To get started with helm clone the repository or copy over the files in the charts folder.
 
 ### Authentication
 
