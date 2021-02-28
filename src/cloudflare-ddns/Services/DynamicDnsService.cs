@@ -32,7 +32,7 @@ namespace CloudflareDDNS.Service
             _cloudflare = cloudflare;
         }
 
-        private string GetTypeFromIPAddress(IPAddress address) =>
+        private static string GetTypeFromIPAddress(IPAddress address) =>
             address.AddressFamily switch
             {
                 AddressFamily.InterNetwork => "A",

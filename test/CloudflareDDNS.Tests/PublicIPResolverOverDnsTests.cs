@@ -90,7 +90,7 @@ namespace CloudflareDDNS.Tests
                 {
                     new TxtRecord(
                         info: new ResourceRecordInfo("myip.test.com", ResourceRecordType.TXT, QueryClass.CH, 5000, 0),
-                        values: new string[] { },
+                        values: Array.Empty<string>(),
                         utf8Values: new string[] { "10.0.0.1" }
                     )
                 });
@@ -121,7 +121,7 @@ namespace CloudflareDDNS.Tests
                 {
                     new TxtRecord(
                         info: new ResourceRecordInfo("myip.test.com", ResourceRecordType.TXT, QueryClass.CH, 5000, 0),
-                        values: new string[] { },
+                        values: Array.Empty<string>(),
                         utf8Values: new string[] { "10.4.4.1", "10.0.0.1" }
                     )
                 });
@@ -179,7 +179,7 @@ namespace CloudflareDDNS.Tests
                 {
                     new TxtRecord(
                         info: new ResourceRecordInfo("myip.test.com", ResourceRecordType.TXT, QueryClass.IN, 5000, 0),
-                        values: new string[] { },
+                        values: Array.Empty<string>(),
                         utf8Values: new string[] { "abc" }
                     )
                 });
@@ -210,7 +210,7 @@ namespace CloudflareDDNS.Tests
                 {
                     new TxtRecord(
                         info: new ResourceRecordInfo("myip.test.com", ResourceRecordType.TXT, QueryClass.IN, 5000, 0),
-                        values: new string[] { },
+                        values: Array.Empty<string>(),
                         utf8Values: new string[] { "2001:0db8:85a3:0000:0000:8a2e:0370:7334" }
                     )
                 });

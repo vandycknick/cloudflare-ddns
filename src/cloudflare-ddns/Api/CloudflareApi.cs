@@ -15,7 +15,7 @@ namespace CloudflareDDNS.Api
     public class CloudflareApi : ICloudflareApi
     {
         public const string ENDPOINT = "https://api.cloudflare.com/client/v4";
-        private static readonly JsonSerializerOptions _serializerOptions = new JsonSerializerOptions
+        private static readonly JsonSerializerOptions _serializerOptions = new()
         {
             IgnoreNullValues = true,
             PropertyNamingPolicy = new SnakeCaseNamingPolicy(),
@@ -58,6 +58,12 @@ namespace CloudflareDDNS.Api
             response.EnsureSuccessStatusCode();
 
             var result = await response.Content.ReadFromJsonAsync<ApiResult<Zone>>(_serializerOptions);
+
+            if (result == null)
+            {
+                throw new Exception($"Invalid api result of type null for {nameof(GetZoneDetails)}"); ;
+            }
+
             return result.Result;
         }
 
@@ -87,6 +93,12 @@ namespace CloudflareDDNS.Api
             response.EnsureSuccessStatusCode();
 
             var result = await response.Content.ReadFromJsonAsync<ApiResult<List<DnsResult>>>(_serializerOptions);
+
+            if (result == null)
+            {
+                throw new Exception($"Invalid api result of type null for {nameof(ListDNSRecords)}");
+            }
+
             return (
                 results: result.Result is null ? new List<DnsResult>() : result.Result,
                 pager: result.Pager
@@ -118,6 +130,11 @@ namespace CloudflareDDNS.Api
 
             var response = await _client.SendAsync(message);
             var result = await response.Content.ReadFromJsonAsync<ApiResult<DnsResult>>(_serializerOptions);
+
+            if (result == null)
+            {
+                throw new Exception($"Invalid api result of type null for {nameof(CreateDNSRecord)}");
+            }
 
             if (!result.Success)
             {
@@ -153,6 +170,11 @@ namespace CloudflareDDNS.Api
 
             var response = await _client.SendAsync(message);
             var result = await response.Content.ReadFromJsonAsync<ApiResult<DnsResult>>(_serializerOptions);
+
+            if (result == null)
+            {
+                throw new Exception($"Invalid api result of type null for {nameof(UpdateDNSRecord)}");
+            }
 
             if (!result.Success)
             {

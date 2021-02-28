@@ -10,7 +10,7 @@ namespace CloudflareDDNS
     public class Config
     {
         public const string ENV_CLOUDFLARE_API_TOKEN = "CLOUDFLARE_API_TOKEN";
-        private static List<string> SUPPORTED_DNS_SERVERS = new List<string>
+        private static readonly List<string> SUPPORTED_DNS_SERVERS = new()
         {
             "cloudflare",
             "google"
@@ -25,7 +25,12 @@ namespace CloudflareDDNS
             var config = await JsonSerializer.DeserializeAsync<Config>(stream);
             var apiToken = Environment.GetEnvironmentVariable(ENV_CLOUDFLARE_API_TOKEN);
 
-            config.ApiToken = apiToken == null ? config.ApiToken : apiToken;
+            if (config == null)
+            {
+                throw new Exception("Config can not be null!");
+            }
+
+            config.ApiToken = apiToken ?? config.ApiToken;
 
             if (string.IsNullOrEmpty(config.ApiToken))
             {

@@ -10,7 +10,7 @@ namespace CloudflareDDNS.Tests
 {
     public class ConfigTests
     {
-        private readonly JsonSerializerOptions serializerOptions = new JsonSerializerOptions
+        private readonly JsonSerializerOptions serializerOptions = new()
         {
             IgnoreNullValues = false,
         };
@@ -210,7 +210,7 @@ namespace CloudflareDDNS.Tests
                     apiToken = "123",
                     records = new[]
                     {
-                        new { zoneId = zoneId, subdomain = subdomain }
+                        new { zoneId, subdomain }
                     }
                 },
                 serializerOptions

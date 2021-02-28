@@ -56,8 +56,8 @@ namespace CloudflareDDNS.Tests
                 .RespondWithJson(new
                 {
                     success = true,
-                    errors = new object[] { },
-                    messages = new string[] { },
+                    errors = Array.Empty<object>(),
+                    messages = Array.Empty<string>(),
                     result = new
                     {
                         id = zoneId,
@@ -96,7 +96,7 @@ namespace CloudflareDDNS.Tests
                     errors = new object[] {
                         new { code = 123, message = "Something something error!"}
                     },
-                    messages = new string[] { },
+                    messages = Array.Empty<string>(),
                 });
 
             // When
@@ -165,8 +165,8 @@ namespace CloudflareDDNS.Tests
                 .RespondWithJson(new
                 {
                     success = true,
-                    errors = new object[] { },
-                    messages = new string[] { },
+                    errors = Array.Empty<object>(),
+                    messages = Array.Empty<string>(),
                     result = new object[]
                     {
                         recordOne, recordTwo,
@@ -240,8 +240,8 @@ namespace CloudflareDDNS.Tests
                 .RespondWithJson(new
                 {
                     success = true,
-                    errors = new object[] { },
-                    messages = new string[] { },
+                    errors = Array.Empty<object>(),
+                    messages = Array.Empty<string>(),
                 });
 
             // When
@@ -292,8 +292,8 @@ namespace CloudflareDDNS.Tests
                 .RespondWithJson(new
                 {
                     success = true,
-                    errors = new object[] { },
-                    messages = new string[] { },
+                    errors = Array.Empty<object>(),
+                    messages = Array.Empty<string>(),
                     result = new object[]
                     {
                         recordOne, recordOne, recordOne, recordOne, recordOne, recordOne
@@ -367,8 +367,8 @@ namespace CloudflareDDNS.Tests
                 .RespondWithJson(new
                 {
                     success = true,
-                    errors = new object[] { },
-                    messages = new string[] { },
+                    errors = Array.Empty<object>(),
+                    messages = Array.Empty<string>(),
                     result = new object[]
                     {
                         recordOne,
@@ -385,8 +385,7 @@ namespace CloudflareDDNS.Tests
             // When
             var client = _mockHttp.ToHttpClient();
             var cloudflare = new CloudflareApi(client, new CloudflareApiOptions(apiToken));
-
-            var (results, pager) = await cloudflare.ListDNSRecords(zoneId, type, name, page, total);
+            _ = await cloudflare.ListDNSRecords(zoneId, type, name, page, total);
 
             // Then
             _mockHttp.VerifyNoOutstandingRequest();
@@ -429,8 +428,8 @@ namespace CloudflareDDNS.Tests
                 .RespondWithJson(new
                 {
                     success = true,
-                    errors = new object[] { },
-                    messages = new string[] { },
+                    errors = Array.Empty<object>(),
+                    messages = Array.Empty<string>(),
                     result = recordOne,
                 });
 
@@ -501,8 +500,8 @@ namespace CloudflareDDNS.Tests
                 .RespondWithJson(new
                 {
                     success = true,
-                    errors = new object[] { },
-                    messages = new string[] { },
+                    errors = Array.Empty<object>(),
+                    messages = Array.Empty<string>(),
                     result = recordOne,
                 });
 
@@ -569,8 +568,8 @@ namespace CloudflareDDNS.Tests
                 .RespondWithJson(new
                 {
                     success = true,
-                    errors = new object[] { },
-                    messages = new string[] { },
+                    errors = Array.Empty<object>(),
+                    messages = Array.Empty<string>(),
                     result = recordOne,
                 });
 
@@ -631,7 +630,7 @@ namespace CloudflareDDNS.Tests
                     {
                         new { code = 123, message = "Record already exists!"}
                     },
-                    messages = new string[] { },
+                    messages = Array.Empty<string>(),
                 });
 
             // When
@@ -671,8 +670,8 @@ namespace CloudflareDDNS.Tests
                 .RespondWithJson(HttpStatusCode.BadRequest, new
                 {
                     success = false,
-                    errors = new object[] { },
-                    messages = new string[] { },
+                    errors = Array.Empty<object>(),
+                    messages = Array.Empty<string>(),
                 });
 
             // When
@@ -727,8 +726,8 @@ namespace CloudflareDDNS.Tests
                 .RespondWithJson(new
                 {
                     success = true,
-                    errors = new object[] { },
-                    messages = new string[] { },
+                    errors = Array.Empty<object>(),
+                    messages = Array.Empty<string>(),
                     result = recordOne,
                 });
 
@@ -801,8 +800,8 @@ namespace CloudflareDDNS.Tests
                 .RespondWithJson(new
                 {
                     success = true,
-                    errors = new object[] { },
-                    messages = new string[] { },
+                    errors = Array.Empty<object>(),
+                    messages = Array.Empty<string>(),
                     result = recordOne,
                 });
 
@@ -876,8 +875,8 @@ namespace CloudflareDDNS.Tests
                 .RespondWithJson(new
                 {
                     success = true,
-                    errors = new object[] { },
-                    messages = new string[] { },
+                    errors = Array.Empty<object>(),
+                    messages = Array.Empty<string>(),
                     result = recordOne,
                 });
 
@@ -941,7 +940,7 @@ namespace CloudflareDDNS.Tests
                     {
                         new { code = 123, message = "Can't update record!"}
                     },
-                    messages = new string[] { },
+                    messages = Array.Empty<string>(),
                 });
 
             // When
@@ -981,8 +980,8 @@ namespace CloudflareDDNS.Tests
                 .RespondWithJson(HttpStatusCode.BadRequest, new
                 {
                     success = false,
-                    errors = new object[] { },
-                    messages = new string[] { },
+                    errors = Array.Empty<object>(),
+                    messages = Array.Empty<string>(),
                 });
 
             // When

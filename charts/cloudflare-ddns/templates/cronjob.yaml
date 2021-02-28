@@ -37,6 +37,12 @@ spec:
                 - name: config-json
                   mountPath: /app/config.json
                   subPath: config.json
+              securityContext:
+                runAsNonRoot: true
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - all
           volumes:
             - name: config-json
               configMap:
