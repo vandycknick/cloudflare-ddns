@@ -8,7 +8,7 @@ namespace CloudflareDDNS.Api
     {
         Task<Zone> GetZoneDetails(string zoneId);
 
-        Task<(List<DnsResult> results, ApiResultPager? pager)> ListDNSRecords(
+        Task<PagedDnsResult> ListDNSRecords(
             string zoneId, string? type = null, string? name = null, int page = 1, int perPage = 20
         );
 

@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Web;
 using CloudflareDDNS.Api.Models;
@@ -17,7 +18,7 @@ namespace CloudflareDDNS.Api
         public const string ENDPOINT = "https://api.cloudflare.com/client/v4";
         private static readonly JsonSerializerOptions _serializerOptions = new()
         {
-            IgnoreNullValues = true,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
             PropertyNamingPolicy = new SnakeCaseNamingPolicy(),
         };
 
@@ -67,7 +68,7 @@ namespace CloudflareDDNS.Api
             return result.Result;
         }
 
-        public async Task<(List<DnsResult> results, ApiResultPager? pager)> ListDNSRecords(string zoneId, string? type = null, string? name = null, int page = 1, int perPage = 20)
+        public async Task<PagedDnsResult> ListDNSRecords(string zoneId, string? type = null, string? name = null, int page = 1, int perPage = 20)
         {
             var builder = new UriBuilder($"{ENDPOINT}/zones/{zoneId}/dns_records");
             var queryString = HttpUtility.ParseQueryString(builder.Query);
@@ -99,9 +100,9 @@ namespace CloudflareDDNS.Api
                 throw new Exception($"Invalid api result of type null for {nameof(ListDNSRecords)}");
             }
 
-            return (
-                results: result.Result is null ? new List<DnsResult>() : result.Result,
-                pager: result.Pager
+            return new PagedDnsResult(
+                Results: result.Result is null ? new List<DnsResult>() : result.Result,
+                Pager: result.Pager
             );
         }
 

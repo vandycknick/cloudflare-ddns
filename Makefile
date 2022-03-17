@@ -38,7 +38,7 @@ version:
 
 .PHONY: run
 run:
-	dotnet run -p $(CLI_PROJECT) -- --log-level verbose
+	dotnet run --project $(CLI_PROJECT) -- --log-level verbose
 
 .PHONY: test
 test:

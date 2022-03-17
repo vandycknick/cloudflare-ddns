@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine as builder
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine3.15 as builder
 
 ARG MINVERVERSIONOVERRIDE
 
@@ -10,12 +10,17 @@ RUN dotnet restore
 COPY . ./
 RUN dotnet publish -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/runtime:5.0-alpine
+FROM mcr.microsoft.com/dotnet/runtime:6.0.3-alpine3.15
+
+RUN addgroup --gid 10001 --system nonroot && \
+    adduser  --uid 10000 --system --ingroup nonroot --home /home/nonroot nonroot
 
 WORKDIR /app
 
+RUN apk add --no-cache bind-tools
+
 COPY --from=builder /app/out .
 
-USER 1000
+USER nonroot
 
 ENTRYPOINT ["dotnet", "cloudflare-ddns.dll"]

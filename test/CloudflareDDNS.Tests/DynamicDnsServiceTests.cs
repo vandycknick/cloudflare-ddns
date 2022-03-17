@@ -66,7 +66,7 @@ namespace CloudflareDDNS.Tests
 
             _mockCloudflareApi
                 .Setup(api => api.ListDNSRecords(zoneId, null, "domain.example.com", 1, 100))
-                .ReturnsAsync((new List<DnsResult>(), new ApiResultPager()));
+                .ReturnsAsync(new PagedDnsResult(new List<DnsResult>(), new ApiResultPager()));
 
             _mockCloudflareApi
                 .Setup(api =>
@@ -121,7 +121,7 @@ namespace CloudflareDDNS.Tests
 
             _mockCloudflareApi
                 .Setup(api => api.ListDNSRecords(zoneId, null, "domain.example.com", 1, 100))
-                .ReturnsAsync((new List<DnsResult>(), new ApiResultPager()));
+                .ReturnsAsync(new PagedDnsResult(new List<DnsResult>(), new ApiResultPager()));
 
             _mockCloudflareApi
                 .Setup(api =>
@@ -195,7 +195,7 @@ namespace CloudflareDDNS.Tests
 
             _mockCloudflareApi
                 .Setup(api => api.ListDNSRecords(zoneId, null, "domain.example.com", 1, 100))
-                .ReturnsAsync((records, new ApiResultPager()));
+                .ReturnsAsync(new PagedDnsResult(records, new ApiResultPager()));
 
             // When
             var ddnsService = new DynamicDnsService(_mockLogger.Object, _mockCloudflareApi.Object);
@@ -247,7 +247,7 @@ namespace CloudflareDDNS.Tests
 
             _mockCloudflareApi
                 .Setup(api => api.ListDNSRecords(zoneId, null, "domain.example.com", 1, 100))
-                .ReturnsAsync((records, new ApiResultPager()));
+                .ReturnsAsync(new PagedDnsResult(records, new ApiResultPager()));
 
             // When
             var ddnsService = new DynamicDnsService(_mockLogger.Object, _mockCloudflareApi.Object);
@@ -293,7 +293,7 @@ namespace CloudflareDDNS.Tests
 
             _mockCloudflareApi
                 .Setup(api => api.ListDNSRecords(zoneId, null, "domain.example.com", 1, 100))
-                .ReturnsAsync((records, new ApiResultPager()));
+                .ReturnsAsync(new PagedDnsResult(records, new ApiResultPager()));
 
             // When
             var ddnsService = new DynamicDnsService(_mockLogger.Object, _mockCloudflareApi.Object);
@@ -347,7 +347,7 @@ namespace CloudflareDDNS.Tests
 
             _mockCloudflareApi
                 .Setup(api => api.ListDNSRecords(zoneId, null, "domain.example.com", 1, 100))
-                .ReturnsAsync((records, new ApiResultPager()));
+                .ReturnsAsync(new PagedDnsResult(records, new ApiResultPager()));
 
             // When
             var ddnsService = new DynamicDnsService(_mockLogger.Object, _mockCloudflareApi.Object);
@@ -399,7 +399,7 @@ namespace CloudflareDDNS.Tests
 
             _mockCloudflareApi
                 .Setup(api => api.ListDNSRecords(zoneId, null, "domain.example.com", 1, 100))
-                .ReturnsAsync((records, new ApiResultPager()));
+                .ReturnsAsync(new PagedDnsResult(records, new ApiResultPager()));
 
             // When
             var ddnsService = new DynamicDnsService(_mockLogger.Object, _mockCloudflareApi.Object);
@@ -447,7 +447,7 @@ namespace CloudflareDDNS.Tests
 
             _mockCloudflareApi
                 .Setup(api => api.ListDNSRecords(zoneId, null, "domain.example.com", 1, 100))
-                .ReturnsAsync((records, new ApiResultPager()));
+                .ReturnsAsync(new PagedDnsResult(records, new ApiResultPager()));
 
             // When
             var ddnsService = new DynamicDnsService(_mockLogger.Object, _mockCloudflareApi.Object);
@@ -491,7 +491,7 @@ namespace CloudflareDDNS.Tests
 
             _mockCloudflareApi
                 .Setup(api => api.ListDNSRecords(zoneId, null, "domain.example.com", 1, 100))
-                .ReturnsAsync((records, new ApiResultPager()));
+                .ReturnsAsync(new PagedDnsResult(records, new ApiResultPager()));
 
             // When
             var ddnsService = new DynamicDnsService(_mockLogger.Object, _mockCloudflareApi.Object);

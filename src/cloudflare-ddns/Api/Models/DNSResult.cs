@@ -1,8 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace CloudflareDDNS.Api.Models
 {
+
+    public record PagedDnsResult(List<DnsResult> Results, ApiResultPager? Pager);
+
     public class DnsResult
     {
         [JsonPropertyName("id")]
