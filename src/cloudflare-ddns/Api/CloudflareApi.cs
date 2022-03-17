@@ -56,6 +56,9 @@ namespace CloudflareDDNS.Api
             };
 
             var response = await _client.SendAsync(message);
+
+            // TODO: CF returns an error object when status code is not success
+            // Rather than throwing this nonsensical error I should parse out the detailed message from CF
             response.EnsureSuccessStatusCode();
 
             var result = await response.Content.ReadFromJsonAsync<ApiResult<Zone>>(_serializerOptions);
