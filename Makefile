@@ -9,7 +9,7 @@ CLI_TOOL			:= cloudflare-ddns
 RUNTIME 			:= $(shell uname -s | awk '{print tolower($$0)}' | sed "s/darwin/osx/")-x64
 
 .PHONY: default
-default: package
+default: package package.chart
 
 .PHONY: clean
 clean:
@@ -57,4 +57,4 @@ package: restore build
 
 .PHONY: package.chart
 package.chart:
-	helm package charts/cloudflare-ddns --destination .build
+	helm package charts/cloudflare-ddns --destination $(ARTIFACTS)
