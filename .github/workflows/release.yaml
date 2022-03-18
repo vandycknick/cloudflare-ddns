@@ -50,8 +50,8 @@ jobs:
           build-args: |
             MINVERVERSIONOVERRIDE=${{ steps.get_version.outputs.VERSION }}
           tags: |
-            ghcr.io/nickvdyck/cloudflare-ddns:latest
-            ghcr.io/nickvdyck/cloudflare-ddns:v${{ steps.get_version.outputs.VERSION }}
+            ghcr.io/vandycknick/cloudflare-ddns:latest
+            ghcr.io/vandycknick/cloudflare-ddns:v${{ steps.get_version.outputs.VERSION }}
 
       - name: Push to feedz.io
         run: dotnet nuget push artifacts/*.nupkg --api-key ${{ secrets.FEEDZ_IO_TOKEN }} --source https://f.feedz.io/nvd/cloudflare-ddns/nuget/index.json --skip-duplicate
