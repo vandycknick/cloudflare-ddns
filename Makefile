@@ -57,4 +57,4 @@ package: restore build
 
 .PHONY: package.chart
 package.chart:
-	helm package charts/cloudflare-ddns --destination $(ARTIFACTS)
+	helm package chart --destination $(ARTIFACTS)
