@@ -1,0 +1,17 @@
+apiVersion: v1
+entries:
+  cloudflare-ddns:
+  - apiVersion: v1
+    appVersion: 1.0.0
+    created: "2022-03-18T19:14:32.858923395+01:00"
+    description: Dynamic DNS service based on Cloudflare! Access your home network remotely via a custom domain name without a static IP!
+    digest: e19690a83ce835b6693975fd56917085d16fb2db64d191b61df25a314110fefc
+    home: https://github.com/nickvdyck/cloudflare-ddns
+    maintainers:
+    - email: vandyck.nick@outlook.com
+      name: Nick Van Dyck
+    name: cloudflare-ddns
+    urls:
+    - https://vandycknick.github.io/cloudflare-ddns/cloudflare-ddns-1.0.0.tgz
+    version: 1.0.0
+generated: "2022-03-18T19:14:32.858604668+01:00"
