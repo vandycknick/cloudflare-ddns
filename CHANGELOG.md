@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [v1.0.1] - 2022-03-18
 
 ### Fixed
-- Run as non root checks in Kubernetes rely on the USER in docker to be an id.
+- In Kubernetes runAsNonRoot relies on the USER in docker to be a numeric value.  This release changes the user to the nobody user.
 
 ## [v1.0.0] - 2022-03-18
 
