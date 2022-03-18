@@ -54,3 +54,7 @@ package: restore build
 		--no-build \
 		--output $(ARTIFACTS) \
 		--include-symbols
+
+.PHONY: package.chart
+package.chart:
+	helm package charts/cloudflare-ddns --destination .build
