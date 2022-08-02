@@ -51,7 +51,20 @@ This will schedule a cronjob and makes sure your DNS is synced every 15 minutes.
 
 #### Windows
 
-TODO
+1. Create a config file somewhere on your distro.
+
+2. Open `Task Scheduler` and create a task.
+
+3. In General tab check `Run whether user is logged on or not`
+
+4. In Triggers tab check `Repeat task every` and select `5 min`.
+
+5. In Action tab add an action.
+    * the `program` is `C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe`
+    * the `arguments` is `cloudflare-ddns`
+    * the `start in` is where your config file location in step 1.
+
+6. Click OK and wait last result become `0x0`. if not,check config and `cloudflare-ddns` command works ok in powershell.
 
 ### Helm
 
