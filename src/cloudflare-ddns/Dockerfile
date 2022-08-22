@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine3.15 as builder
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine3.16 as builder
 
 ARG MINVERVERSIONOVERRIDE
 
@@ -10,7 +10,7 @@ RUN dotnet restore
 COPY . ./
 RUN dotnet publish -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/runtime:6.0.3-alpine3.15
+FROM mcr.microsoft.com/dotnet/runtime:6.0.8-alpine3.16
 
 WORKDIR /app
 
