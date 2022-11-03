@@ -1,3 +1,6 @@
+{{- if .Values.config.apiToken -}}
+{{- fail "Please set the API Token with the secrets.apiToken and not with config.apiToken value." -}}
+{{- end -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -10,17 +13,4 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 data:
   config.json: |
-    {
-      "ipv4": {{ .Values.config.ipv4}},
-      "ipv6": {{ .Values.config.ipv6}},
-      "records": [
-        {{- range $record := $.Values.config.records }}
-          {
-            "zoneId": "{{ $record.zoneId }}",
-            "subdomain": "{{ $record.subdomain }}",
-            "proxied": {{ $record.proxied }}
-          }
-        {{- end }}
-      ]
-    }
-
+    {{- .Values.config | toPrettyJson | nindent 4 }}
